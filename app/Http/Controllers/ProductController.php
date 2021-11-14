@@ -14,8 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-      return "Bonjour, je suis APi REST"; 
-      // return Product::all();
+     // return "Bonjour, je suis APi REST"; 
+       return Product::all();
       // $result= json_decode(Product::all());
       //  return view('Json',compact('result'));
     }
@@ -27,8 +27,9 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    { 
+
+       return  Product::create($request ->all());
     }
 
     /**
@@ -39,7 +40,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        return Product::find($id);
     }
 
     /**
@@ -51,7 +52,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product=Product::find($id);
+        $product->update($request->all());
+
+        return $product;
+        
     }
 
     /**
@@ -62,6 +67,21 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product=Product::find($id);
+        $product->delete();
+        return Product::all();
+    }
+
+    
+    /**
+     * Search the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function search($name)
+    {
+        $prod=Product::where('name','like','%'.$name.'%')->get();
+        return $prod;
     }
 }
